@@ -12,6 +12,7 @@ module Lograge
     class Base < ActiveSupport::LogSubscriber
       def logger
         Lograge.logger.presence || super
+        Lograge.remote_logger.presence || super
       end
 
       private

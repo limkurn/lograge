@@ -24,7 +24,7 @@ require 'active_support/core_ext/string/inflections'
 module Lograge
   module_function
 
-  mattr_accessor :logger, :application, :ignore_tests
+  mattr_accessor :logger, :remote_logger :application, :ignore_tests
 
   # Custom options that will be appended to log line
   #
@@ -184,6 +184,7 @@ module Lograge
 
   def set_lograge_log_options
     Lograge.logger = lograge_config.logger
+    Lograge.remote_logger = lograge_config.remote_logger
     Lograge.custom_options = lograge_config.custom_options
     Lograge.before_format = lograge_config.before_format
     Lograge.log_level = lograge_config.log_level || :info
