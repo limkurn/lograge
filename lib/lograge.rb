@@ -24,7 +24,7 @@ require 'active_support/core_ext/string/inflections'
 module Lograge
   module_function
 
-  mattr_accessor :logger, :remote_logger :application, :ignore_tests
+  mattr_accessor :logger, :remote_logger, :application, :ignore_tests
 
   # Custom options that will be appended to log line
   #
