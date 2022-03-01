@@ -23,7 +23,7 @@ module Lograge
         data = extract_request(event, payload)
         data = before_format(data, payload)
         formatted_message = Lograge.formatter.call(data)
-        data = after_format(formatted_message, payload)
+        after_format(data, payload)
         logger.send(Lograge.log_level, formatted_message)
       end
 
