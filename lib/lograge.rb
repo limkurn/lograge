@@ -24,7 +24,7 @@ require 'active_support/core_ext/string/inflections'
 module Lograge
   module_function
 
-  mattr_accessor :logger, :remote_logger, :application, :ignore_tests
+  mattr_accessor :logger, :application, :ignore_tests
 
   # Custom options that will be appended to log line
   #
@@ -46,12 +46,19 @@ module Lograge
   # Before format allows you to change the structure of the output.
   # You've to pass in something callable
   #
-  mattr_writer :before_format
+  mattr_writer :before_format, :after_format
   self.before_format = nil
+  self.after_format = nil
 
   def before_format(data, payload)
     result = nil
     result = @@before_format.call(data, payload) if @@before_format
+    result || data
+  end
+
+  def after_format(data, payload)
+    result = nil
+    result = @@after_format.call(data, payload) if @@after_format
     result || data
   end
 
@@ -184,9 +191,9 @@ module Lograge
 
   def set_lograge_log_options
     Lograge.logger = lograge_config.logger
-    Lograge.remote_logger = lograge_config.remote_logger
     Lograge.custom_options = lograge_config.custom_options
     Lograge.before_format = lograge_config.before_format
+    Lograge.after_format = lograge_config.after_format
     Lograge.log_level = lograge_config.log_level || :info
   end
 

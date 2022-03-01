@@ -12,7 +12,6 @@ module Lograge
     class Base < ActiveSupport::LogSubscriber
       def logger
         Lograge.logger.presence || super
-        Lograge.remote_logger.presence || super
       end
 
       private
@@ -24,6 +23,7 @@ module Lograge
         data = extract_request(event, payload)
         data = before_format(data, payload)
         formatted_message = Lograge.formatter.call(data)
+        data = after_format(formatted_message, payload)
         logger.send(Lograge.log_level, formatted_message)
       end
 
@@ -68,6 +68,11 @@ module Lograge
       def before_format(data, payload)
         Lograge.before_format(data, payload)
       end
+
+      def after_format(data, payload)
+        Lograge.after_format(data, payload)
+      end
+
     end
   end
 end
